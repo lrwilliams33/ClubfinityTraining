@@ -1,32 +1,38 @@
-const anyName = "Landon";
-let len = anyName.length;
+let playGame = confirm("Shall we play rock, paper, or scissors?");
+if (playGame) {
+  // play
+  let playerChoice = prompt("Please enter rock, paper, or scissors.");
+  if (playerChoice) {
+    let playerOne = playerChoice.trim().toLowerCase(); // trims whitespace and makes lowercase
+    if (playerOne === "rock" || playerOne === "paper" || playerOne === "scissors") {
 
-console.log(anyName.charAt(Math.floor(Math.random() * len)));
+      let computerChoice = Math.floor(Math.random() * 3 + 1);
+      let computer = computerChoice === 1 ? "rock" : computerChoice === 2
+      ? "paper" : "scissors";
 
-// switch
-switch("2") {
+      let result = 
+      playerOne === computer
+        ? "Tie game!"
+        : playerOne === "rock" && computer === "paper"
+        ? `playerOne: ${playerOne}\nComputer: ${computer}\nComputer wins!`
+        : playerOne === "paper" && computer === "scissors"
+        ? `playerOne: ${playerOne}\nComputer: ${computer}\nComputer wins!`
+        : playerOne === "scissors" && computer === "rock"
+        ? `playerOne: ${playerOne}\nComputer: ${computer}\nComputer wins!`
+        : `playerOne: ${playerOne}\nComputer: ${computer}\nPlayerOne wins!`;
+      alert(result);
+      let playAgain = confirm("Play Again?");
+      playAgain ? location.reload() : alert("Ok, thnaks for playing.");
+    }
+    else {
+      alert("You didn't enter rock, paper, or sciessors.")
+    }
+  }
+  else {
+    alert("I guess you changed your mind. Maybe next time.")
+  }
 
-  case 1:
-    console.log("1");
-    break;
-
-  case 2:
-    console.log(2);
-    break;
-
-  default:
-    console.log("No match");
 }
-
-// ternary operator
-// condition ? if true : if false
-
-let soup = "Chicken";
-let response = soup ? "Yes we have soup" : "Sorry No soup today";
-console.log(response);
-
-// User input
-alert("hi"); // popup window with only ok
-let confirmed = confirm("Ok === True"); // popup window with ok or cancel
-let name = prompt("Please enter your name."); // popup with textbox
-// double question marks ?? checks for null value (useful when no name is entered in the prompt)
+else {
+  alert("Ok, maybe next time.")
+}
