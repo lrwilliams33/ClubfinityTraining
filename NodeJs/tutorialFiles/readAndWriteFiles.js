@@ -7,7 +7,7 @@ fs.readFile(path.join(__dirname, 'files', 'starter.txt'), 'utf8', (err, data) =>
   console.log(data); // prints readable data from the starter file
 });
 
-console.log("hello"); // this will output first because the code above is still processing
+//console.log("hello"); // this will output first because the code above is still processing
 
 // write "nice to meet you" to a file
 fs.writeFile(path.join(__dirname, 'files', 'reply.txt'), 'Nice to meet you.', (err) => {
