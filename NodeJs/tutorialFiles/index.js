@@ -1,4 +1,4 @@
-const logEvents = require('./logEvents'); // import log events function from file
+const logEvents = require('../logEvents'); // import log events function from file
 
 const EventEmitter = require('events');
 
