@@ -1,3 +1,6 @@
+// run in terminal write "npm run dev"
+
+
 
 const express = require('express');
 const app = express();
@@ -36,22 +39,13 @@ app.use(express.json());
 
 // serve static files
 // applies the css files??
-app.use(express.static(path.join(__dirname, '/public')));
+app.use('/', express.static(path.join(__dirname, '/public')));
+app.use('/subdir', express.static(path.join(__dirname, '/public')));
 
-app.get('^/$|/index(.html)?', (req, res) => { // symbols are regex
-  //res.sendFile('./views/index.html', {root: __dirname});
-  res.sendFile(path.join(__dirname, 'views', 'index.html'));
-});
+app.use('/', require('./routes/root')); // router
+app.use('/subdir', require('./routes/subdir')); // router
+app.use('/employees', require('./routes/api/employees')); // router
 
-app.get('/new-page.html', (req, res) => {
-  //res.sendFile('./views/index.html', {root: __dirname});
-  res.sendFile(path.join(__dirname, 'views', 'new-page.html'));
-});
-
-app.get('/old-page.html', (req, res) => {
-  //res.sendFile('./views/index.html', {root: __dirname});
-  res.redirect(path.join(301, '/new-page.html'));
-});
 
 // default (a slash followed by anyything goes here) so it redirects to 404 because doesnt exist
 app.all('*', (req, res) => {
