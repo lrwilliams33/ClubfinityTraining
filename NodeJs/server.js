@@ -6,45 +6,45 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const cors = require('cors');
+const corsOptions = require('./config/corsOptions');
 const { logger } = require('./middleware/logEvents');
 const errorHandler = require('./middleware/errorHandler');
 const { tr } = require('date-fns/locale');
+const verifyJWT = require('./middleware/verifyJWT');
+const cookieParser = require('cookie-parser');
 const PORT = process.env.PORT || 3500;
 
 // custom middleware logger
 app.use(logger);
 
 // coors wont prevent these sites from accessing the back end data
-const whitelist = ['https://www.mysite.com', 'http://127.0.0.1:5500', 'http://localhost:3500'];
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  optionsSuccessStatus: 200
-}
+app.use(cors(corsOptions));
 
 // cross origin resource sharing
 app.use(cors(corsOptions));
 
-// middleware to handle urlencoded data aka form data
-// content-type: application/x-www-form-urlencoded
+// middleware to handle unrelated data aka form data
 app.use(express.urlencoded({ extended: false }));
 
 // built in middleware for json
 app.use(express.json());
 
+// middleware for cookies
+app.use(cookieParser());
+
 // serve static files
 // applies the css files??
 app.use('/', express.static(path.join(__dirname, '/public')));
-app.use('/subdir', express.static(path.join(__dirname, '/public')));
 
+// routes
 app.use('/', require('./routes/root')); // router
-app.use('/subdir', require('./routes/subdir')); // router
+app.use('/register', require('./routes/register')); // router
+app.use('/auth', require('./routes/auth')); // router
+app.use('/refresh', require('./routes/refresh')); // router
+
+app.use(verifyJWT);
 app.use('/employees', require('./routes/api/employees')); // router
+
 
 
 // default (a slash followed by anyything goes here) so it redirects to 404 because doesnt exist
